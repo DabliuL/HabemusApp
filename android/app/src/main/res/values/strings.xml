@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">HabemusApp</string>
+    <string name="title_activity_main">HabemusApp</string>
+    <string name="package_name">com.habemusapp.app</string>
+    <string name="custom_url_scheme">com.habemusapp.app</string>
+</resources>
