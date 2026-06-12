@@ -25,8 +25,8 @@ const EPISODES = [
     date: '10 de Junho de 2026',
     duration: '58 min',
     summary: 'Neste episódio, conversamos sobre a sacralidade da Santa Missa, o simbolismo dos ritos litúrgicos, os paramentos sacerdotais e a importância do silêncio interior para vivenciar os mistérios divinos.',
-    youtubeUrl: 'https://youtube.com',
-    spotifyUrl: 'https://spotify.com'
+    youtubeUrl: 'https://www.youtube.com/@habemuspodcast25',
+    spotifyUrl: 'https://open.spotify.com/show/3aUB8HK0MCcbiOYERxPP1w'
   },
   {
     id: 2,
@@ -35,8 +35,8 @@ const EPISODES = [
     date: '03 de Junho de 2026',
     duration: '45 min',
     summary: 'A misericórdia de Deus é infinita, mas como nos preparar bem? Discutimos o exame de consciência prático, a dor sincera pelos pecados, o propósito de emenda e como vencer a vergonha na hora de confessar ao sacerdote.',
-    youtubeUrl: 'https://youtube.com',
-    spotifyUrl: 'https://spotify.com'
+    youtubeUrl: 'https://www.youtube.com/@habemuspodcast25',
+    spotifyUrl: 'https://open.spotify.com/show/3aUB8HK0MCcbiOYERxPP1w'
   },
   {
     id: 3,
@@ -45,8 +45,8 @@ const EPISODES = [
     date: '27 de Maio de 2026',
     duration: '52 min',
     summary: 'Exploramos a história do Santo Rosário, sua revelação a São Domingos de Gusmão, o ensinamento dos santos e dos Papas, e como essa oração é a maior arma de combate espiritual na vida do cristão moderno.',
-    youtubeUrl: 'https://youtube.com',
-    spotifyUrl: 'https://spotify.com'
+    youtubeUrl: 'https://www.youtube.com/@habemuspodcast25',
+    spotifyUrl: 'https://open.spotify.com/show/3aUB8HK0MCcbiOYERxPP1w'
   },
   {
     id: 4,
@@ -55,8 +55,8 @@ const EPISODES = [
     date: '20 de Maio de 2026',
     duration: '1h 05min',
     summary: 'É possível ser santo na rotina do trabalho, contas a pagar, casamento e criação de filhos? Nossos convidados partilham a beleza da espiritualidade conjugal e a santificação das pequenas obrigações diárias.',
-    youtubeUrl: 'https://youtube.com',
-    spotifyUrl: 'https://spotify.com'
+    youtubeUrl: 'https://www.youtube.com/@habemuspodcast25',
+    spotifyUrl: 'https://open.spotify.com/show/3aUB8HK0MCcbiOYERxPP1w'
   },
   {
     id: 5,
@@ -65,8 +65,8 @@ const EPISODES = [
     date: '13 de Maio de 2026',
     duration: '50 min',
     summary: 'A doutrina católica sobre os anjos da guarda, arcanjos e as hierarquias celestes. Saiba como se aproximar de seu anjo protetor e contar com a ajuda dos mensageiros divinos no combate espiritual diário.',
-    youtubeUrl: 'https://youtube.com',
-    spotifyUrl: 'https://spotify.com'
+    youtubeUrl: 'https://www.youtube.com/@habemuspodcast25',
+    spotifyUrl: 'https://open.spotify.com/show/3aUB8HK0MCcbiOYERxPP1w'
   }
 ]
 
@@ -97,7 +97,7 @@ export default function Podcast() {
 
           {/* Título Principal */}
           <div className="font-serif select-text">
-            <span className="font-black italic text-3xl md:text-4xl text-zinc-950 block tracking-tight uppercase leading-none">
+            <span className="font-black italic text-3xl md:text-4xl text-slate-950 block tracking-tight uppercase leading-none">
               O SEU
             </span>
             <span className="font-extrabold text-5xl md:text-6xl text-white block tracking-tighter -mt-1 leading-none uppercase">
@@ -144,7 +144,7 @@ export default function Podcast() {
       {/* Links de Plataformas Estilizados */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <a
-          href="https://youtube.com"
+          href="https://www.youtube.com/@habemuspodcast25"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-3 bg-red-600 hover:bg-red-500 text-white py-3 px-4 rounded-2xl font-sans font-bold text-xs transition-colors shadow-md shadow-red-950/10 cursor-pointer"
@@ -155,7 +155,7 @@ export default function Podcast() {
         </a>
 
         <a
-          href="https://spotify.com"
+          href="https://open.spotify.com/show/3aUB8HK0MCcbiOYERxPP1w"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-3 bg-emerald-600 hover:bg-emerald-500 text-white py-3 px-4 rounded-2xl font-sans font-bold text-xs transition-colors shadow-md shadow-emerald-950/10 cursor-pointer"
@@ -166,7 +166,7 @@ export default function Podcast() {
         </a>
 
         <a
-          href="https://instagram.com"
+          href="https://www.instagram.com/habemuspodcast.br/"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-3 bg-zinc-900 border border-zinc-800 hover:border-gold/50 hover:text-gold text-zinc-300 py-3 px-4 rounded-2xl font-sans font-bold text-xs transition-all cursor-pointer"
@@ -177,10 +177,30 @@ export default function Podcast() {
         </a>
       </div>
 
-      {/* Lista de Episódios */}
+      {/* Player do Spotify Incorporado (Sincronizado em Tempo Real) */}
+      <div className="space-y-3">
+        <h3 className="text-lg font-serif font-bold text-gold tracking-wide uppercase text-xs flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Feed de Episódios no Spotify (Tempo Real)
+        </h3>
+        <div className="glass-panel p-2 rounded-2xl border border-zinc-900 overflow-hidden">
+          <iframe
+            style={{ borderRadius: '12px' }}
+            src="https://open.spotify.com/embed/show/3aUB8HK0MCcbiOYERxPP1w?utm_source=generator&theme=0"
+            width="100%"
+            height="352"
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            title="Habemus Podcast no Spotify"
+          ></iframe>
+        </div>
+      </div>
+
+      {/* Lista de Destaques Manual */}
       <div className="space-y-4">
         <h3 className="text-lg font-serif font-bold text-gold tracking-wide uppercase text-xs">
-          Episódios Lançados
+          Episódios em Destaque
         </h3>
         
         <div className="space-y-4">
