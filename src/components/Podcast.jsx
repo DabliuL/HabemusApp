@@ -16,59 +16,7 @@ const InstagramIcon = (props) => (
   </svg>
 )
 
-// Episódios reais/curados do Habemus Podcast
-const EPISODES = [
-  {
-    id: 1,
-    title: 'Episódio 42 - A Beleza da Liturgia e o Silêncio Sagrado',
-    guest: 'Convidado: Pe. Júlio Maria',
-    date: '10 de Junho de 2026',
-    duration: '58 min',
-    summary: 'Neste episódio, conversamos sobre a sacralidade da Santa Missa, o simbolismo dos ritos litúrgicos, os paramentos sacerdotais e a importância do silêncio interior para vivenciar os mistérios divinos.',
-    youtubeUrl: 'https://www.youtube.com/@habemuspodcast25',
-    spotifyUrl: 'https://open.spotify.com/show/3aUB8HK0MCcbiOYERxPP1w'
-  },
-  {
-    id: 2,
-    title: 'Episódio 41 - Como fazer uma boa Confissão de verdade?',
-    guest: 'Convidada: Profa. Maria Alice',
-    date: '03 de Junho de 2026',
-    duration: '45 min',
-    summary: 'A misericórdia de Deus é infinita, mas como nos preparar bem? Discutimos o exame de consciência prático, a dor sincera pelos pecados, o propósito de emenda e como vencer a vergonha na hora de confessar ao sacerdote.',
-    youtubeUrl: 'https://www.youtube.com/@habemuspodcast25',
-    spotifyUrl: 'https://open.spotify.com/show/3aUB8HK0MCcbiOYERxPP1w'
-  },
-  {
-    id: 3,
-    title: 'Episódio 40 - O Santo Rosário: Nossa Arma Espiritual',
-    guest: 'Convidado: Irmão Mateus, OSB',
-    date: '27 de Maio de 2026',
-    duration: '52 min',
-    summary: 'Exploramos a história do Santo Rosário, sua revelação a São Domingos de Gusmão, o ensinamento dos santos e dos Papas, e como essa oração é a maior arma de combate espiritual na vida do cristão moderno.',
-    youtubeUrl: 'https://www.youtube.com/@habemuspodcast25',
-    spotifyUrl: 'https://open.spotify.com/show/3aUB8HK0MCcbiOYERxPP1w'
-  },
-  {
-    id: 4,
-    title: 'Episódio 39 - A Vocação à Santidade no Casamento e Cotidiano',
-    guest: 'Convidados: Casal Felipe e Ana Clara',
-    date: '20 de Maio de 2026',
-    duration: '1h 05min',
-    summary: 'É possível ser santo na rotina do trabalho, contas a pagar, casamento e criação de filhos? Nossos convidados partilham a beleza da espiritualidade conjugal e a santificação das pequenas obrigações diárias.',
-    youtubeUrl: 'https://www.youtube.com/@habemuspodcast25',
-    spotifyUrl: 'https://open.spotify.com/show/3aUB8HK0MCcbiOYERxPP1w'
-  },
-  {
-    id: 5,
-    title: 'Episódio 38 - Os Santos Anjos e o Combate Invisível',
-    guest: 'Convidado: Pe. Gabriel Arcanjo',
-    date: '13 de Maio de 2026',
-    duration: '50 min',
-    summary: 'A doutrina católica sobre os anjos da guarda, arcanjos e as hierarquias celestes. Saiba como se aproximar de seu anjo protetor e contar com a ajuda dos mensageiros divinos no combate espiritual diário.',
-    youtubeUrl: 'https://www.youtube.com/@habemuspodcast25',
-    spotifyUrl: 'https://open.spotify.com/show/3aUB8HK0MCcbiOYERxPP1w'
-  }
-]
+
 
 export default function Podcast() {
   return (
@@ -197,70 +145,7 @@ export default function Podcast() {
         </div>
       </div>
 
-      {/* Lista de Destaques Manual */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-serif font-bold text-gold tracking-wide uppercase text-xs">
-          Episódios em Destaque
-        </h3>
-        
-        <div className="space-y-4">
-          {EPISODES.map((ep) => (
-            <div
-              key={ep.id}
-              className="glass-panel p-5 rounded-2xl flex flex-col md:flex-row gap-4 justify-between border-l-2 border-l-gold hover:border-gold/30 transition-all font-sans"
-            >
-              <div className="space-y-3 flex-1">
-                {/* Meta info */}
-                <div className="flex flex-wrap items-center gap-3 text-zinc-500 text-[10px] md:text-xs">
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5 text-gold/60" />
-                    {ep.date}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5 text-gold/60" />
-                    {ep.duration}
-                  </span>
-                </div>
 
-                <div className="space-y-1">
-                  <h4 className="text-base font-serif font-bold text-zinc-100 leading-snug">
-                    {ep.title}
-                  </h4>
-                  <p className="text-xs text-gold/80 font-medium font-sans">
-                    {ep.guest}
-                  </p>
-                </div>
-
-                <p className="text-xs md:text-sm text-zinc-400 leading-relaxed text-justify">
-                  {ep.summary}
-                </p>
-              </div>
-
-              {/* Botões Play por Plataforma */}
-              <div className="flex md:flex-col justify-end items-center gap-2 shrink-0 border-t border-zinc-900/60 md:border-t-0 pt-3 md:pt-0">
-                <a
-                  href={ep.youtubeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 md:flex-initial flex items-center justify-center gap-1.5 px-3 py-2 bg-zinc-900 border border-zinc-800 hover:border-red-500/50 hover:bg-red-950/20 text-xs text-zinc-300 hover:text-red-400 rounded-xl transition-all cursor-pointer font-semibold"
-                >
-                  <Play className="w-3.5 h-3.5 fill-current" />
-                  <span>Vídeo</span>
-                </a>
-                <a
-                  href={ep.spotifyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 md:flex-initial flex items-center justify-center gap-1.5 px-3 py-2 bg-zinc-900 border border-zinc-800 hover:border-emerald-500/50 hover:bg-emerald-950/20 text-xs text-zinc-300 hover:text-emerald-400 rounded-xl transition-all cursor-pointer font-semibold"
-                >
-                  <Play className="w-3.5 h-3.5 fill-current" />
-                  <span>Áudio</span>
-                </a>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* Roda do Podcast info */}
       <div className="text-center py-6 text-zinc-500 font-sans text-xs">
