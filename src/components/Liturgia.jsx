@@ -131,16 +131,31 @@ export default function Liturgia() {
           <ChevronLeft className="w-5 h-5" />
         </button>
 
-        <button
-          onClick={setToday}
-          className="flex items-center gap-2 px-3 py-1.5 hover:bg-zinc-800 rounded-lg text-zinc-200 transition-colors font-sans text-sm font-medium cursor-pointer"
-        >
-          <Calendar className="w-4 h-4 text-gold" />
-          <span>{formatDateStr(selectedDate)}</span>
-          {formatDateStr(selectedDate) === formatDateStr(new Date()) && (
-            <span className="text-[10px] bg-gold/15 text-gold px-2 py-0.5 rounded-full border border-gold/20">Hoje</span>
-          )}
-        </button>
+        <div className="relative">
+          <button
+            className="flex items-center gap-2 px-3 py-1.5 hover:bg-zinc-800 rounded-lg text-zinc-200 transition-colors font-sans text-sm font-medium cursor-pointer"
+          >
+            <Calendar className="w-4 h-4 text-gold" />
+            <span>{formatDateStr(selectedDate)}</span>
+            {formatDateStr(selectedDate) === formatDateStr(new Date()) && (
+              <span className="text-[10px] bg-gold/15 text-gold px-2 py-0.5 rounded-full border border-gold/20">Hoje</span>
+            )}
+          </button>
+          
+          <input
+            type="date"
+            value={selectedDate.toLocaleDateString('en-CA')} // Retorna YYYY-MM-DD no fuso local
+            onChange={(e) => {
+              if (e.target.value) {
+                const parts = e.target.value.split('-')
+                const newDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10))
+                setSelectedDate(newDate)
+              }
+            }}
+            className="absolute inset-0 opacity-0 cursor-pointer w-full h-full [color-scheme:dark]"
+            title="Escolher data no calendário"
+          />
+        </div>
 
         <button
           onClick={() => changeDate(1)}
