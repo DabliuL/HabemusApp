@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Calendar, ChevronLeft, ChevronRight, Type, Loader2, RefreshCw } from 'lucide-react'
 
 // Cores litúrgicas
@@ -10,15 +10,81 @@ const colorMap = {
   rosa: { bg: 'bg-pink-950/40 text-pink-400 border-pink-500/30', label: 'Gaudete / Laetare' },
 }
 
+const MONTHS = [
+  'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+]
+const WEEKDAYS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+
+const getCalendarDays = (year, month) => {
+  const firstDayIndex = new Date(year, month, 1).getDay()
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const daysInPrevMonth = new Date(year, month, 0).getDate()
+  
+  const cells = []
+  
+  // Mês anterior
+  for (let i = firstDayIndex - 1; i >= 0; i--) {
+    cells.push({
+      day: daysInPrevMonth - i,
+      month: month === 0 ? 11 : month - 1,
+      year: month === 0 ? year - 1 : year,
+      isCurrentMonth: false
+    })
+  }
+  
+  // Mês atual
+  for (let i = 1; i <= daysInMonth; i++) {
+    cells.push({
+      day: i,
+      month: month,
+      year: year,
+      isCurrentMonth: true
+    })
+  }
+  
+  // Próximo mês
+  const totalCells = cells.length > 35 ? 42 : 35
+  const nextMonthDaysNeeded = totalCells - cells.length
+  for (let i = 1; i <= nextMonthDaysNeeded; i++) {
+    cells.push({
+      day: i,
+      month: month === 11 ? 0 : month + 1,
+      year: month === 11 ? year + 1 : year,
+      isCurrentMonth: false
+    })
+  }
+  
+  return cells
+}
+
 export default function Liturgia() {
   const [selectedDate, setSelectedDate] = useState(new Date())
-  const dateInputRef = useRef(null)
+  const [showCalendarModal, setShowCalendarModal] = useState(false)
+  const [calendarViewDate, setCalendarViewDate] = useState(new Date())
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [fontSize, setFontSize] = useState('base') // 'sm', 'base', 'lg', 'xl', '2xl'
   const [activeTab, setActiveTab] = useState('leituras') // 'leituras', 'oracoes'
   const [activeReading, setActiveReading] = useState('primeira') // 'primeira', 'salmo', 'segunda', 'evangelho'
+
+  const handleOpenCalendar = () => {
+    setCalendarViewDate(new Date(selectedDate))
+    setShowCalendarModal(true)
+  }
+
+  const changeCalendarMonth = (offset) => {
+    const d = new Date(calendarViewDate)
+    d.setMonth(d.getMonth() + offset)
+    setCalendarViewDate(d)
+  }
+
+  const handleSelectCalendarDay = (cell) => {
+    const selected = new Date(cell.year, cell.month, cell.day)
+    setSelectedDate(selected)
+    setShowCalendarModal(false)
+  }
 
   // Ajuste do tamanho da fonte para leitura
   const fontSizeClasses = {
@@ -132,14 +198,10 @@ export default function Liturgia() {
           <ChevronLeft className="w-5 h-5" />
         </button>
 
-        <div className="relative">
+        <div>
           <button
-            onClick={() => {
-              if (dateInputRef.current && typeof dateInputRef.current.showPicker === 'function') {
-                dateInputRef.current.showPicker()
-              }
-            }}
-            className="flex items-center gap-2 px-3 py-1.5 hover:bg-zinc-800 rounded-lg text-zinc-200 transition-colors font-sans text-sm font-medium cursor-pointer"
+            onClick={handleOpenCalendar}
+            className="flex items-center gap-2 px-3 py-1.5 hover:bg-zinc-850 hover:text-gold border border-zinc-900 rounded-lg text-zinc-200 transition-all font-sans text-sm font-medium cursor-pointer"
           >
             <Calendar className="w-4 h-4 text-gold" />
             <span>{formatDateStr(selectedDate)}</span>
@@ -147,21 +209,6 @@ export default function Liturgia() {
               <span className="text-[10px] bg-gold/15 text-gold px-2 py-0.5 rounded-full border border-gold/20">Hoje</span>
             )}
           </button>
-          
-          <input
-            ref={dateInputRef}
-            type="date"
-            value={selectedDate.toLocaleDateString('en-CA')} // Retorna YYYY-MM-DD no fuso local
-            onChange={(e) => {
-              if (e.target.value) {
-                const parts = e.target.value.split('-')
-                const newDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10))
-                setSelectedDate(newDate)
-              }
-            }}
-            className="absolute inset-0 opacity-0 cursor-pointer w-full h-full [color-scheme:dark]"
-            title="Escolher data no calendário"
-          />
         </div>
 
         <button
@@ -409,6 +456,95 @@ export default function Liturgia() {
           )}
         </div>
       ) : null}
+
+      {/* MODAL DO CALENDÁRIO PERSONALIZADO */}
+      {showCalendarModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-sm animate-fade-in font-sans">
+          <div className="glass-panel w-full max-w-sm p-5 rounded-3xl border border-zinc-850 space-y-4">
+            {/* Cabeçalho do Calendário */}
+            <div className="flex items-center justify-between border-b border-zinc-900 pb-3">
+              <button
+                onClick={() => changeCalendarMonth(-1)}
+                className="p-1.5 hover:bg-zinc-900 border border-zinc-850 rounded-lg text-gold transition-colors cursor-pointer"
+                title="Mês anterior"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              
+              <span className="font-serif font-bold text-zinc-200 text-sm md:text-base">
+                {MONTHS[calendarViewDate.getMonth()]} de {calendarViewDate.getFullYear()}
+              </span>
+              
+              <button
+                onClick={() => changeCalendarMonth(1)}
+                className="p-1.5 hover:bg-zinc-900 border border-zinc-850 rounded-lg text-gold transition-colors cursor-pointer"
+                title="Próximo mês"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+            
+            {/* Dias da semana */}
+            <div className="grid grid-cols-7 gap-1 text-center font-serif text-[10px] font-bold text-gold uppercase tracking-wider">
+              {WEEKDAYS.map(d => (
+                <div key={d} className="py-1">{d}</div>
+              ))}
+            </div>
+            
+            {/* Grade de dias */}
+            <div className="grid grid-cols-7 gap-1 text-center text-xs md:text-sm">
+              {getCalendarDays(calendarViewDate.getFullYear(), calendarViewDate.getMonth()).map((cell, idx) => {
+                const isSelected = 
+                  selectedDate.getDate() === cell.day &&
+                  selectedDate.getMonth() === cell.month &&
+                  selectedDate.getFullYear() === cell.year
+                
+                const isToday = 
+                  new Date().getDate() === cell.day &&
+                  new Date().getMonth() === cell.month &&
+                  new Date().getFullYear() === cell.year
+                
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => handleSelectCalendarDay(cell)}
+                    className={`py-2 rounded-lg transition-all text-center flex items-center justify-center cursor-pointer ${
+                      isSelected
+                        ? 'bg-gold text-slate-950 font-bold shadow-md shadow-gold/20'
+                        : isToday
+                        ? 'border border-gold/45 text-gold font-semibold'
+                        : cell.isCurrentMonth
+                        ? 'text-zinc-200 hover:bg-zinc-900/50'
+                        : 'text-zinc-650 hover:bg-zinc-900/30'
+                    }`}
+                  >
+                    {cell.day}
+                  </button>
+                )
+              })}
+            </div>
+            
+            {/* Ações / Rodapé */}
+            <div className="flex gap-2 pt-2 border-t border-zinc-900">
+              <button
+                onClick={() => {
+                  setSelectedDate(new Date())
+                  setShowCalendarModal(false)
+                }}
+                className="flex-1 py-2.5 bg-zinc-900 hover:bg-zinc-850 border border-zinc-800 text-zinc-350 font-bold rounded-xl text-xs transition-colors cursor-pointer"
+              >
+                Hoje
+              </button>
+              <button
+                onClick={() => setShowCalendarModal(false)}
+                className="flex-1 py-2.5 bg-gold hover:bg-gold-light text-slate-950 font-bold rounded-xl text-xs transition-colors cursor-pointer"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
