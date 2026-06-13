@@ -6,6 +6,7 @@ import Terco from './components/Terco'
 import Oracoes from './components/Oracoes'
 import Confissao from './components/Confissao'
 import Podcast from './components/Podcast'
+import ViaSacra from './components/ViaSacra'
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState('home')
@@ -25,6 +26,8 @@ export default function App() {
         return <Terco />
       case 'oracoes':
         return <Oracoes />
+      case 'viasacra':
+        return <ViaSacra />
       case 'confissao':
         return <Confissao />
       case 'podcast':

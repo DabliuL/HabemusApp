@@ -1,5 +1,5 @@
 import React from 'react'
-import { BookOpen, Flame, Heart, Shield, Headphones, Calendar, Compass, MessageSquare } from 'lucide-react'
+import { BookOpen, Flame, Heart, Shield, Headphones, Calendar, Compass, MessageSquare, Footprints } from 'lucide-react'
 
 // Citações diárias de santos
 const quotes = [
@@ -100,7 +100,7 @@ export default function Home({ setCurrentTab }) {
               {dailySaint.description}
             </p>
           </div>
-          <div className="text-zinc-500 text-xs mt-4 flex items-center gap-1.5 font-sans">
+          <div className="text-zinc-550 text-xs mt-4 flex items-center gap-1.5 font-sans">
             <Compass className="w-3.5 h-3.5 text-gold/50" />
             Que sua intercessão nos acompanhe hoje.
           </div>
@@ -133,6 +133,17 @@ export default function Home({ setCurrentTab }) {
             </div>
             <span className="font-serif font-semibold text-sm text-zinc-200 group-hover:text-gold">Santo Terço</span>
             <span className="text-[10px] text-zinc-500 font-sans hidden sm:block">Reze o terço passo a passo</span>
+          </button>
+
+          <button
+            onClick={() => setCurrentTab('viasacra')}
+            className="glass-panel p-4 rounded-xl flex flex-col items-center justify-center text-center gap-2 transition-all duration-200 hover:scale-[1.03] hover:border-gold/30 group cursor-pointer"
+          >
+            <div className="p-3 rounded-full bg-zinc-900 text-gold group-hover:bg-gold/10 transition-colors">
+              <Footprints className="w-6 h-6" />
+            </div>
+            <span className="font-serif font-semibold text-sm text-zinc-200 group-hover:text-gold">Via Sacra</span>
+            <span className="text-[10px] text-zinc-500 font-sans hidden sm:block">Medite o caminho da cruz</span>
           </button>
 
           <button
