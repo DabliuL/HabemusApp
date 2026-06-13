@@ -7,17 +7,48 @@ import Oracoes from './components/Oracoes'
 import Confissao from './components/Confissao'
 import Podcast from './components/Podcast'
 import ViaSacra from './components/ViaSacra'
+import { motion, AnimatePresence } from 'framer-motion'
+
+const TABS_ORDER = ['home', 'liturgia', 'terco', 'viasacra', 'oracoes', 'confissao', 'podcast']
+
+const slideVariants = {
+  enter: (dir) => ({
+    x: dir > 0 ? 80 : dir < 0 ? -80 : 0,
+    opacity: 0
+  }),
+  center: {
+    x: 0,
+    opacity: 1
+  },
+  exit: (dir) => ({
+    x: dir > 0 ? -80 : dir < 0 ? 80 : 0,
+    opacity: 0
+  })
+}
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState('home')
+  const [prevTab, setPrevTab] = useState('home')
+  const [direction, setDirection] = useState(0) // 1 para avançar (para a esquerda), -1 para retroceder (para a direita)
   
   // Controle de deslize para transição de abas
   const [touchStart, setTouchStart] = useState({ x: 0, y: 0 })
   const [touchEnd, setTouchEnd] = useState({ x: 0, y: 0 })
 
-  // Scroll para o topo ao trocar de aba (melhoria para mobile)
+  // Determinar a direção do movimento e atualizar aba anterior
   useEffect(() => {
-    window.scrollTo(0, 0)
+    const prevIndex = TABS_ORDER.indexOf(prevTab)
+    const currentIndex = TABS_ORDER.indexOf(currentTab)
+    
+    if (currentIndex > prevIndex) {
+      setDirection(1)
+    } else if (currentIndex < prevIndex) {
+      setDirection(-1)
+    } else {
+      setDirection(0)
+    }
+    setPrevTab(currentTab)
+    window.scrollTo(0, 0) // Scroll para o topo ao trocar de aba (melhoria para mobile)
   }, [currentTab])
 
   const handleTouchStart = (e) => {
@@ -94,10 +125,25 @@ export default function App() {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      className="min-h-screen"
+      className="min-h-screen overflow-x-hidden"
     >
       <Layout currentTab={currentTab} setCurrentTab={setCurrentTab}>
-        {renderContent()}
+        <div className="overflow-hidden w-full relative">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={currentTab}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{ duration: 0.22, ease: 'easeInOut' }}
+              className="w-full h-full"
+            >
+              {renderContent()}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </Layout>
     </div>
   )
