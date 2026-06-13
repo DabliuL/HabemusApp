@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Calendar, ChevronLeft, ChevronRight, Type, Loader2, RefreshCw } from 'lucide-react'
 
 // Cores litúrgicas
@@ -12,6 +12,7 @@ const colorMap = {
 
 export default function Liturgia() {
   const [selectedDate, setSelectedDate] = useState(new Date())
+  const dateInputRef = useRef(null)
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -133,6 +134,11 @@ export default function Liturgia() {
 
         <div className="relative">
           <button
+            onClick={() => {
+              if (dateInputRef.current && typeof dateInputRef.current.showPicker === 'function') {
+                dateInputRef.current.showPicker()
+              }
+            }}
             className="flex items-center gap-2 px-3 py-1.5 hover:bg-zinc-800 rounded-lg text-zinc-200 transition-colors font-sans text-sm font-medium cursor-pointer"
           >
             <Calendar className="w-4 h-4 text-gold" />
@@ -143,6 +149,7 @@ export default function Liturgia() {
           </button>
           
           <input
+            ref={dateInputRef}
             type="date"
             value={selectedDate.toLocaleDateString('en-CA')} // Retorna YYYY-MM-DD no fuso local
             onChange={(e) => {
