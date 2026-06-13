@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from 'react'
-import { Home, BookOpen, Flame, Heart, Shield, Headphones, ChevronLeft, ChevronRight, Footprints } from 'lucide-react'
+import { Home, BookOpen, Flame, Heart, Shield, Headphones, ChevronLeft, ChevronRight, Footprints, Sun, Moon } from 'lucide-react'
 
 export default function Layout({ children, currentTab, setCurrentTab }) {
   const [isCollapsed, setIsCollapsed] = useState(() => {
     return localStorage.getItem('habemus_sidebar_collapsed') === 'true'
   })
+  
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('habemus_theme') || 'dark'
+  })
 
   useEffect(() => {
     localStorage.setItem('habemus_sidebar_collapsed', isCollapsed)
   }, [isCollapsed])
+
+  useEffect(() => {
+    if (theme === 'light') {
+      document.body.classList.add('light')
+    } else {
+      document.body.classList.remove('light')
+    }
+    localStorage.setItem('habemus_theme', theme)
+  }, [theme])
 
   const navItems = [
     { id: 'home', label: 'Início', icon: Home },
@@ -82,8 +95,25 @@ export default function Layout({ children, currentTab, setCurrentTab }) {
         </nav>
 
         {/* Rodapé da Sidebar */}
-        <div className="p-4 border-t border-zinc-900 text-center text-xs text-zinc-500 font-sans whitespace-nowrap">
-          {isCollapsed ? 'v1.0' : 'Habemus App v1.0.0'}
+        <div className="p-4 border-t border-zinc-900 flex flex-col gap-3 items-center justify-center font-sans text-xs text-zinc-500">
+          <button
+            onClick={() => setTheme(prev => prev === 'dark' ? 'light' : 'dark')}
+            className="p-2 bg-zinc-900 border border-zinc-850 hover:border-gold/30 hover:text-gold text-zinc-400 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 w-full max-w-[150px]"
+            title={theme === 'dark' ? 'Mudar para Modo Claro' : 'Mudar para Modo Escuro'}
+          >
+            {theme === 'dark' ? (
+              <>
+                <Sun className="w-4 h-4 text-amber-400" />
+                {!isCollapsed && <span>Modo Claro</span>}
+              </>
+            ) : (
+              <>
+                <Moon className="w-4 h-4 text-violet-400" />
+                {!isCollapsed && <span>Modo Escuro</span>}
+              </>
+            )}
+          </button>
+          {!isCollapsed && <span>Habemus App v1.0.0</span>}
         </div>
       </aside>
 
@@ -93,9 +123,22 @@ export default function Layout({ children, currentTab, setCurrentTab }) {
           <span className="text-xl">⛪</span>
           <span className="text-lg font-serif font-bold tracking-wide text-gold">Habemus App</span>
         </div>
-        <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-gold/10 text-gold border border-gold/20">
-          Ad maiorem Dei gloriam
-        </span>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setTheme(prev => prev === 'dark' ? 'light' : 'dark')}
+            className="p-2 bg-zinc-900/50 border border-zinc-850 hover:border-gold/30 hover:text-gold text-zinc-400 rounded-xl transition-all cursor-pointer flex items-center justify-center"
+            title={theme === 'dark' ? 'Modo Claro' : 'Modo Escuro'}
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-4 h-4 text-amber-400" />
+            ) : (
+              <Moon className="w-4 h-4 text-violet-400" />
+            )}
+          </button>
+          <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gold/10 text-gold border border-gold/20 hidden sm:inline-block">
+            Ad maiorem Dei gloriam
+          </span>
+        </div>
       </header>
 
       {/* Área de conteúdo principal */}

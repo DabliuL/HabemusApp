@@ -452,8 +452,7 @@ export default function Terco() {
           <div className="flex items-start gap-2.5 bg-zinc-900/40 p-4 rounded-xl border border-zinc-900 text-xs text-zinc-400 font-sans leading-relaxed">
             <AlertCircle className="w-4 h-4 text-gold shrink-0 mt-0.5" />
             <p>
-              Recomenda-se rezar o terço em um local silencioso e recolhido, contemplando cada mistério com amor. 
-              Ao utilizar no celular, a cada avanço o aparelho dará um leve feedback de vibração para simular a passagem da conta física do terço.
+              Recomenda-se rezar o terço em um local silencioso e recolhido, contemplando cada mistério com amor.
             </p>
           </div>
         </div>
