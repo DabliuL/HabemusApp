@@ -74,9 +74,8 @@ export default function Podcast() {
           <div className="bg-white p-3.5 pb-6 shadow-2xl rounded-sm transform rotate-3 max-w-[210px] border border-zinc-200">
             {/* Foto Polaroid */}
             <div className="bg-zinc-200 aspect-square w-44 rounded-sm overflow-hidden relative flex items-center justify-center">
-              <div className="absolute inset-0 bg-gradient-to-tr from-gold to-zinc-950 opacity-40"></div>
-              <span className="text-5xl z-10">🎙️</span>
-              <div className="absolute bottom-0 inset-x-0 h-1/3 bg-gradient-to-t from-zinc-950/60 to-transparent"></div>
+              <img src="/host.jpg" alt="Wesley Gabriel" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-tr from-gold/20 to-zinc-950/40 mix-blend-overlay"></div>
             </div>
             {/* Legenda escrita à mão */}
             <div className="mt-3 text-center">
@@ -136,7 +135,7 @@ export default function Podcast() {
             style={{ borderRadius: '12px' }}
             src="https://open.spotify.com/embed/show/3aUB8HK0MCcbiOYERxPP1w?utm_source=generator&theme=0"
             width="100%"
-            height="600"
+            height="152"
             frameBorder="0"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
             loading="lazy"

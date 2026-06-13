@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { AlertTriangle, Trash2, Plus, Check, ShieldCheck, Heart, BookOpen, ListTodo } from 'lucide-react'
+import { AlertTriangle, Trash2, Plus, Check, ShieldCheck, Heart, BookOpen, ListTodo, Calendar } from 'lucide-react'
 
 // Perguntas para exame de consciência por mandamento
 const EXAM_QUESTIONS = [
@@ -72,12 +72,53 @@ const EXAM_QUESTIONS = [
   }
 ]
 
+// Função auxiliar para calcular tempo desde a última confissão
+const getConfessionTimeMessage = (dateStr) => {
+  if (!dateStr) return 'Nenhuma confissão registrada ainda.'
+  
+  const parts = dateStr.split('-')
+  const confDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10))
+  
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  confDate.setHours(0, 0, 0, 0)
+  
+  const diffTime = today.getTime() - confDate.getTime()
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24))
+  
+  if (diffDays < 0) {
+    return 'Data futura registrada'
+  }
+  if (diffDays === 0) {
+    return 'Você se confessou hoje. Graças a Deus!'
+  }
+  if (diffDays === 1) {
+    return 'Você se confessou ontem (1 dia atrás).'
+  }
+  if (diffDays < 30) {
+    return `Você se confessou há ${diffDays} dias.`
+  }
+  
+  const diffMonths = Math.floor(diffDays / 30)
+  const remainingDays = diffDays % 30
+  if (diffMonths === 1) {
+    if (remainingDays === 0) return 'Você se confessou há 1 mês.'
+    if (remainingDays === 1) return 'Você se confessou há 1 mês e 1 dia.'
+    return `Você se confessou há 1 mês e ${remainingDays} dias.`
+  }
+  
+  if (remainingDays === 0) return `Você se confessou há ${diffMonths} meses.`
+  if (remainingDays === 1) return `Você se confessou há ${diffMonths} meses e 1 dia.`
+  return `Você se confessou há ${diffMonths} meses e ${remainingDays} dias.`
+}
+
 export default function Confissao() {
   const [activeSubTab, setActiveSubTab] = useState('guia') // 'guia', 'exame', 'anotacoes'
   const [notes, setNotes] = useState([])
   const [inputNote, setInputNote] = useState('')
+  const [lastConfessionDate, setLastConfessionDate] = useState(null)
 
-  // Carregar anotações do localStorage no início
+  // Carregar anotações e data da última confissão do localStorage no início
   useEffect(() => {
     const savedNotes = localStorage.getItem('habemus_confession_notes')
     if (savedNotes) {
@@ -87,12 +128,45 @@ export default function Confissao() {
         console.error(e)
       }
     }
+    const savedConfDate = localStorage.getItem('habemus_last_confession_date')
+    if (savedConfDate) {
+      setLastConfessionDate(savedConfDate)
+    }
   }, [])
 
   // Atualizar localStorage
   const saveToLocalStorage = (updatedNotes) => {
     setNotes(updatedNotes)
     localStorage.setItem('habemus_confession_notes', JSON.stringify(updatedNotes))
+  }
+
+  // Confirmar confissão hoje
+  const handleConfessedToday = () => {
+    const todayStr = new Date().toLocaleDateString('en-CA') // Retorna YYYY-MM-DD no fuso local
+    setLastConfessionDate(todayStr)
+    localStorage.setItem('habemus_last_confession_date', todayStr)
+    
+    // Oferecer para apagar os pecados anotados
+    if (notes.length > 0) {
+      if (window.confirm('Parabéns pela sua confissão! Deseja apagar todas as anotações de pecados atuais para limpar seu exame?')) {
+        saveToLocalStorage([])
+      }
+    }
+  }
+
+  // Ajustar data personalizada
+  const handleSetCustomDate = (dateVal) => {
+    if (!dateVal) return
+    setLastConfessionDate(dateVal)
+    localStorage.setItem('habemus_last_confession_date', dateVal)
+  }
+
+  // Limpar histórico de data
+  const handleClearConfessionDate = () => {
+    if (window.confirm('Deseja limpar a data da última confissão registrada?')) {
+      setLastConfessionDate(null)
+      localStorage.removeItem('habemus_last_confession_date')
+    }
   }
 
   // Adicionar anotação manual
@@ -164,6 +238,58 @@ export default function Confissao() {
             Nenhum dado é enviado para a internet. Apague tudo com um toque após a confissão.
           </p>
         </div>
+      </div>
+
+      {/* Registro de Última Confissão */}
+      <div className="glass-panel p-4 rounded-2xl bg-zinc-900/40 border border-zinc-800/80 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-gold/10 text-gold rounded-xl border border-gold/20 shrink-0">
+              <Calendar className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="font-serif font-bold text-gold text-xs uppercase tracking-wider">Última Confissão</h4>
+              <p className="text-sm font-sans text-zinc-100 font-semibold mt-0.5">
+                {getConfessionTimeMessage(lastConfessionDate)}
+              </p>
+            </div>
+          </div>
+          
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Botão de confessar hoje */}
+            <button
+              onClick={handleConfessedToday}
+              className="bg-gold hover:bg-gold-light text-slate-950 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition-colors cursor-pointer shadow-md shadow-gold/5"
+            >
+              <Check className="w-4 h-4 stroke-[3]" />
+              <span>Confessei-me hoje</span>
+            </button>
+            
+            {/* Input de data para ajustar */}
+            <div className="flex items-center gap-1.5 bg-zinc-950 border border-zinc-900 rounded-xl px-3 py-1.5">
+              <span className="text-[10px] text-zinc-500 font-sans uppercase font-bold">Ajustar:</span>
+              <input
+                type="date"
+                value={lastConfessionDate || ''}
+                onChange={(e) => handleSetCustomDate(e.target.value)}
+                className="bg-transparent text-xs text-zinc-300 font-semibold focus:outline-none cursor-pointer [color-scheme:dark]"
+                title="Escolher outra data de confissão"
+              />
+            </div>
+          </div>
+        </div>
+        
+        {lastConfessionDate && (
+          <div className="pt-2 border-t border-zinc-900 flex justify-between items-center text-[10px] text-zinc-550 font-sans">
+            <span>Registrado em: {new Date(lastConfessionDate + 'T00:00:00').toLocaleDateString('pt-BR')}</span>
+            <button
+              onClick={handleClearConfessionDate}
+              className="text-red-400/80 hover:text-red-400 hover:underline transition-colors cursor-pointer"
+            >
+              Limpar histórico de confissão
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Abas */}
