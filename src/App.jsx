@@ -6,10 +6,9 @@ import Terco from './components/Terco'
 import Oracoes from './components/Oracoes'
 import Confissao from './components/Confissao'
 import Podcast from './components/Podcast'
-import ViaSacra from './components/ViaSacra'
 import { motion, AnimatePresence } from 'framer-motion'
 
-const TABS_ORDER = ['home', 'liturgia', 'terco', 'viasacra', 'oracoes', 'confissao', 'podcast']
+const TABS_ORDER = ['home', 'liturgia', 'terco', 'oracoes', 'confissao', 'podcast']
 
 const slideVariants = {
   enter: (dir) => ({
@@ -30,6 +29,7 @@ export default function App() {
   const [currentTab, setCurrentTab] = useState('home')
   const [prevTab, setPrevTab] = useState('home')
   const [direction, setDirection] = useState(0) // 1 para avançar (para a esquerda), -1 para retroceder (para a direita)
+  const [oracoesSubTab, setOracoesSubTab] = useState('catalogo') // 'catalogo', 'viasacra', 'plano'
   
   // Controle de deslize para transição de abas
   const [touchStart, setTouchStart] = useState({ x: 0, y: 0 })
@@ -78,7 +78,6 @@ export default function App() {
 
     // Verifica se foi um deslize horizontal considerável e não uma rolagem vertical
     if (Math.abs(diffX) > 75 && Math.abs(diffX) > Math.abs(diffY) * 2) {
-      const TABS_ORDER = ['home', 'liturgia', 'terco', 'viasacra', 'oracoes', 'confissao', 'podcast']
       const currentIndex = TABS_ORDER.indexOf(currentTab)
 
       if (diffX > 0) {
@@ -102,21 +101,19 @@ export default function App() {
   const renderContent = () => {
     switch (currentTab) {
       case 'home':
-        return <Home setCurrentTab={setCurrentTab} />
+        return <Home setCurrentTab={setCurrentTab} setOracoesSubTab={setOracoesSubTab} />
       case 'liturgia':
         return <Liturgia />
       case 'terco':
         return <Terco />
       case 'oracoes':
-        return <Oracoes />
-      case 'viasacra':
-        return <ViaSacra />
+        return <Oracoes activeTab={oracoesSubTab} setActiveTab={setOracoesSubTab} />
       case 'confissao':
         return <Confissao />
       case 'podcast':
         return <Podcast />
       default:
-        return <Home setCurrentTab={setCurrentTab} />
+        return <Home setCurrentTab={setCurrentTab} setOracoesSubTab={setOracoesSubTab} />
     }
   }
 

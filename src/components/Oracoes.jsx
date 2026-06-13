@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Search, ChevronLeft, Type, BookOpen, Heart, Shield, Compass, Sparkles, Clock, Sunrise, Sun, Moon, Plus, Trash2, Check, CheckSquare, Square, X, Calendar } from 'lucide-react'
+import ViaSacra from './ViaSacra'
 
 // Banco de dados de orações católicas
 const PRAYER_DATABASE = [
@@ -136,8 +137,11 @@ const categoryIcons = {
   'espirito-santo': Sparkles,
 }
 
-export default function Oracoes() {
-  const [activeMainTab, setActiveMainTab] = useState('catalogo') // 'catalogo' ou 'plano'
+export default function Oracoes({ activeTab: externalActiveTab, setActiveTab: externalSetActiveTab }) {
+  const [localActiveTab, setLocalActiveTab] = useState('catalogo')
+  const activeMainTab = externalActiveTab || localActiveTab
+  const setActiveMainTab = externalSetActiveTab || setLocalActiveTab
+  
   const [searchTerm, setSearchTerm] = useState('')
   const [activeCategory, setActiveCategory] = useState('todas')
   const [selectedPrayer, setSelectedPrayer] = useState(null)
@@ -392,8 +396,18 @@ export default function Oracoes() {
             activeMainTab === 'catalogo' ? 'text-gold border-b-2 border-gold font-bold' : 'text-zinc-400 hover:text-zinc-200'
           }`}
         >
-          Índice de Orações
+          Índice
         </button>
+        
+        <button
+          onClick={() => setActiveMainTab('viasacra')}
+          className={`flex-1 py-3 text-center font-serif text-sm font-semibold transition-all cursor-pointer ${
+            activeMainTab === 'viasacra' ? 'text-gold border-b-2 border-gold font-bold' : 'text-zinc-400 hover:text-zinc-200'
+          }`}
+        >
+          Via Sacra
+        </button>
+
         <button
           onClick={() => setActiveMainTab('plano')}
           className={`flex-1 py-3 text-center font-serif text-sm font-semibold transition-all cursor-pointer relative ${
@@ -713,13 +727,17 @@ export default function Oracoes() {
               </div>
             </div>
           ) : (
-            <div className="glass-panel p-12 text-center text-zinc-550 font-sans text-sm space-y-2">
-              <p>Você ainda não criou seu Plano de Oração Diária.</p>
-              <p className="text-xs text-zinc-600 max-w-sm mx-auto">
-                Adicione orações a partir do catálogo clicando no botão de "+" de qualquer oração, ou clique no botão **Adicionar Oração** acima.
-              </p>
+            <div className="glass-panel p-8 text-center text-zinc-500 font-sans text-sm">
+              Seu plano de orações está vazio. Adicione orações do catálogo ou crie itens personalizados acima.
             </div>
           )}
+        </div>
+      )}
+
+      {/* RENDER TAB: VIA SACRA */}
+      {activeMainTab === 'viasacra' && (
+        <div className="space-y-6 animate-fade-in">
+          <ViaSacra />
         </div>
       )}
 

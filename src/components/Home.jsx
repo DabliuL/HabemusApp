@@ -47,7 +47,7 @@ const saints = [
   { name: "São Tiago Maior", description: "Primeiro dos apóstolos a sofrer o martírio." }
 ]
 
-export default function Home({ setCurrentTab }) {
+export default function Home({ setCurrentTab, setOracoesSubTab }) {
   const today = new Date()
   const dayOfWeek = today.getDay() // 0 a 6
   const dayOfMonth = today.getDate() // 1 a 31
@@ -136,7 +136,10 @@ export default function Home({ setCurrentTab }) {
           </button>
 
           <button
-            onClick={() => setCurrentTab('viasacra')}
+            onClick={() => {
+              setCurrentTab('oracoes')
+              setOracoesSubTab('viasacra')
+            }}
             className="glass-panel p-4 rounded-xl flex flex-col items-center justify-center text-center gap-2 transition-all duration-200 hover:scale-[1.03] hover:border-gold/30 group cursor-pointer"
           >
             <div className="p-3 rounded-full bg-zinc-900 text-gold group-hover:bg-gold/10 transition-colors">

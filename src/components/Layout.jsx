@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Home, BookOpen, Flame, Heart, Shield, Headphones, ChevronLeft, ChevronRight, Footprints, Sun, Moon } from 'lucide-react'
+import { Home, BookOpen, Flame, Heart, Shield, Headphones, ChevronLeft, ChevronRight, Sun, Moon } from 'lucide-react'
 
 export default function Layout({ children, currentTab, setCurrentTab }) {
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -27,7 +27,6 @@ export default function Layout({ children, currentTab, setCurrentTab }) {
     { id: 'home', label: 'Início', icon: Home },
     { id: 'liturgia', label: 'Liturgia', icon: BookOpen },
     { id: 'terco', label: 'Terço', icon: Flame },
-    { id: 'viasacra', label: 'Via Sacra', icon: Footprints },
     { id: 'oracoes', label: 'Orações', icon: Heart },
     { id: 'confissao', label: 'Confissão', icon: Shield },
     { id: 'podcast', label: 'Podcast', icon: Headphones },
