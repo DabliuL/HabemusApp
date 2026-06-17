@@ -74,7 +74,7 @@ export default function Podcast() {
           <div className="bg-white p-3.5 pb-6 shadow-2xl rounded-sm transform rotate-3 max-w-[210px] border border-zinc-200">
             {/* Foto Polaroid */}
             <div className="bg-zinc-200 aspect-square w-44 rounded-sm overflow-hidden relative flex items-center justify-center">
-              <img src="/host.jpg" alt="Wesley Gabriel" className="w-full h-full object-cover" />
+              <img src="./host.jpg" alt="Wesley Gabriel" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-tr from-gold/20 to-zinc-950/40 mix-blend-overlay"></div>
             </div>
             {/* Legenda escrita à mão */}
